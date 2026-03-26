@@ -1,0 +1,7 @@
+Linhas = []
+
+with open("livros.txt", "r") as arquivo:
+    for Linha in arquivo:
+        Linhas.append(Linha.strip())
+
+print(Linhas)
