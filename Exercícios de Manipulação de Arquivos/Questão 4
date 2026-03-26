@@ -1,0 +1,58 @@
+boletim = []
+
+while True:
+    nome = input("Digite o nome do aluno: ").strip()
+    while not nome:
+        print("Nome inválido! Digite um Nome Válido.")
+        nome = input("Digite o nome do aluno: ").strip()
+
+    nota1 = input("Digite a Nota 1: ").strip()
+    while not nota1.replace('.', '', 1).isdigit():
+        print("Nota 1 inválida! Digite apenas números.")
+        nota1 = input("Digite a Nota 1: ").strip()
+    nota1 = float(nota1)
+
+    nota2 = input("Digite a Nota 2: ").strip()
+    while not nota2.replace('.', '', 1).isdigit():
+        print("Nota 2 inválida! Digite apenas números.")
+        nota2 = input("Digite a Nota 2: ").strip()
+    nota2 = float(nota2)
+
+    media = round((nota1 + nota2) / 2, 2)
+
+    if 0 <= media <= 10:
+        resultado = "Aprovado" if media >= 6 else "Reprovado"
+    else:
+        print("Valores inválidos, insira notas entre 0 e 10.")
+        continue 
+
+    aluno = {
+        "Nome": nome,
+        "Nota 1": nota1,
+        "Nota 2": nota2,
+        "Média": media,
+        "Resultado": resultado
+    }
+
+    boletim.append(aluno)
+
+    with open("Boletim.txt", "a", encoding="utf-8") as arquivo:
+        arquivo.write(f"Nome: {nome}, Nota 1: {nota1}, Nota 2: {nota2}, Média: {media}, Resultado: {resultado}\n")
+
+    while True:
+        encerrar = input("Digite 'sair' para encerrar ou 'continuar' para cadastrar outro aluno: ").lower().strip()
+        if encerrar == "sair":
+            exit_program = True
+            break
+        elif encerrar == "continuar":
+            exit_program = False
+            break
+        else:
+            print("Opção inválida! Digite apenas 'sair' ou 'continuar'.")
+    
+    if exit_program:
+        break
+
+print("\nBoletim Registrado:")
+for aluno in boletim:
+    print(aluno)
