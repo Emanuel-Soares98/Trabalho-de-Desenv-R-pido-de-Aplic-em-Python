@@ -1,1 +1,59 @@
+from datetime import datetime
 
+Cadastro = []
+
+while True:
+    Nome = input("Digite Seu Nome: ").strip()
+    while not Nome:
+        print("Nome inválido! Não pode estar vazio.")
+        Nome = input("Digite Seu Nome: ").strip()
+
+    RG = input("Digite Seu RG: ").strip()
+    while not RG.isdigit():
+        print("RG inválido! Digite apenas números.")
+        RG = input("Digite Seu RG: ").strip()
+
+    CPF = input("Digite Seu CPF (apenas números, 11 dígitos): ").strip()
+    while not (CPF.isdigit() and len(CPF) == 11):
+        print("CPF inválido! Deve ter 11 números.")
+        CPF = input("Digite Seu CPF (apenas números, 11 dígitos): ").strip()
+
+    while True:
+        Data_de_Nascimento = input("Digite Sua Data de Nascimento (DD/MM/AAAA): ").strip()
+        try:
+            nascimento = datetime.strptime(Data_de_Nascimento, "%d/%m/%Y")
+            hoje = datetime.today()
+            idade = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))
+            break
+        except ValueError:
+            print("Formato inválido! Use DD/MM/AAAA.")
+
+    pessoa = {
+        "Nome": Nome,
+        "RG": RG,
+        "CPF": CPF,
+        "Data de Nascimento": Data_de_Nascimento,
+        "Idade": idade
+    }
+
+    Cadastro.append(pessoa)
+    with open("cadastros.txt", "a") as arquivo:
+        arquivo.write(f"Nome: {Nome}, RG: {RG}, CPF: {CPF}, Data de Nascimento: {Data_de_Nascimento}, Idade: {idade}\n")
+
+    while True:
+        Saida = input("Digite 'sair' para encerrar ou 'continuar' para cadastrar outro: ").lower().strip()
+        if Saida == "sair":
+            exit_program = True
+            break
+        elif Saida == "continuar":
+            exit_program = False
+            break
+        else:
+            print("Opção inválida! Digite apenas 'sair' ou 'continuar'.")
+
+    if exit_program:
+        break
+
+print("\nCadastro Concluido Com Sucesso")
+for pessoa in Cadastro:
+    print(pessoa)
